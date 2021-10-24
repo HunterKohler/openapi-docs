@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Copyright (C) 2021 Hunter Kohler <jhunterkohler@gmail.com> -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/styles/index.css" />
+    <script src="/scripts/index.js" type="module"></script>
+    <title>{{info.title}}</title>
+</head>
+<body>
+    <div class="root">
+        <aside class="sidebar">
+            <section class="toc">
+                <h2 class="toc__title">Table of Contents</h2>
+                <ul class="toc__list">
+                    {{#if servers}}
+                        <li class="toc__item">
+                            <span class="toc__label">
+                                <a class="toc__link" href="#servers">Servers</a>
+                            </span>
+                        </li>
+                    {{/if}}
+                    {{#if components.securitySchemes}}
+                        <li class="toc__item">
+                            <span class="toc__label">
+                                <a class="toc__link" href="#tags">Security</a>
+                            </span>
+                            <ul class="toc__sublist">
+                                {{#each components.securitySchemes}}
+                                    <li class="toc__subitem">
+                                        <a href="#{{slug "security" @key}}"
+                                            class="toc__sublabel">{{@key}}</a>
+                                    </li>
+                                {{/each}}
+                            </ul>
+                        </li>
+                    {{/if}}
+                    {{#if tags}}
+                        <li class="toc__item">
+                            <span class="toc__label">
+                                <a class="toc__link" href="#tags">Tags</a>
+                            </span>
+                            <ul class="toc__sublist">
+                                {{#each tags}}
+                                    <li class="toc__subitem">
+                                        <a href="#{{slug "tags" this.name }}"
+                                            class="toc__sublabel">{{this.name}}</a>
+                                    </li>
+                                {{/each}}
+                            </ul>
+                        </li>
+                    {{/if}}
+                    {{#if paths}}
+                        <li class="toc__item">
+                            <span class="toc__label">
+                                <a class="toc__link" href="#paths">Paths</a>
+                            </span>
+                            <ul class="toc__sublist">
+                                {{#each paths}}
+                                    <li class="toc__subitem">
+                                        <a href="#{{slug "paths" @key}}"
+                                            class="toc__sublabel">{{@key}}</a>
+                                    </li>
+                                {{/each}}
+                            </ul>
+                        </li>
+                    {{/if}}
+                    {{#if webhooks}}
+                        <li class="toc__item">
+                            <span class="toc__label">
+                                <a class="toc__link" href="#webhooks">Webhooks</a>
+                            </span>
+                            <ul class="toc__sublist">
+                                {{#each webhooks}}
+                                    <li class="toc__subitem">
+                                        <a href="#{{slug "webhooks" @key}}"
+                                           class="toc__sublabel">{{@key}}</a>
+                                    </li>
+                                {{/each}}
+                            </ul>
+                        </li>
+                    {{/if}}
+                </ul>
+            </section>
+        </aside>
+        <div class="resizer">
+            <div class="resizer__area"></div>
+        </div>
+        <main class="main">
+            <section class="head">
+                <div class="title">
+                    <h1 class="title__text">{{info.title}}</h1>
+                    <p class="title__version">v{{info.version}}</p>
+                </div>
+                <dl class="info">
+                    <dt class="info__label">License:</dt>
+                    <dd>
+                        <a
+                            rel="license"
+                            class="info__license"
+                            href="{{info.license.url}}"
+                        >{{info.license.name}}</a>
+                    </dd>
+                    <dt class="info__label">Contact:</dt>
+                    <dd>
+                        <dl class="info__contact">
+                            <dt>Name:</dt>
+                            <dd
+                                class="info__contact-description"
+                            >{{info.contact.name}}</dd>
+                            <dt>URL:</dt>
+                            <dd class="info__contact-description">
+                                <a
+                                    href="{{info.contact.url}}"
+                                >{{normalize info.contact.url}}</a>
+                            </dd>
+                            <dt>Email:</dt>
+                            <dd class="info__contact-description">
+                                <a
+                                    href="mailto:{{info.contact.email}}"
+                                >{{info.contact.email}}</a>
+                            </dd>
+                        </dl>
+                    </dd>
+                </dl>
+            </section>
+            {{#if info.description}}
+                <section>
+                    {{{markdown info.description}}}
+                </section>
+            {{/if}}
+            {{#if servers}}
+                <section>
+                    <h2 id="servers">Servers</h2>
+                    <ul>
+                        {{#each servers}}
+                            <li>
+                                <a rel="external"
+                                   href="{{this.url}}"
+                                >{{normalize this.url}}</a>
+                                {{#if this.description}}
+                                    {{{markdown this.description}}}
+                                {{/if}}
+                                {{#if this.variables}}
+                                    {{! TODO(display variables) }}
+                                    {{json this.variables}}
+                                {{/if}}
+                            </li>
+                        {{/each}}
+                    </ul>
+                </section>
+            {{/if}}
+            {{#if components.securitySchemes}}
+                <section>
+                    <h2 id="security">Security</h2>
+                    {{#each components.securitySchemes}}
+                        <h3 id="{{slug "security" @key}}">{{@key}}</h3>
+                        {{{markdown this.description}}}
+                        <dl>
+                            <dt>Type</dt>
+                            <dd>{{this.type}}</dd>
+                            {{#if (eq this.type "apiKey")}}
+                                <dt>Name</dt>
+                                <dd>{{this.name}}</dd>
+                                <dt>In</dt>
+                                <dd>{{this.in}}</dd>
+                            {{/if}}
+                            {{#if (eq this.type "http")}}
+                                <dt>Scheme</dt>
+                                <dd>{{this.scheme}}</dd>
+                            {{/if}}
+                            {{#if (eq this.type "oauth2")}}
+                            {{/if}}
+                        </dl>
+                    {{/each}}
+                </section>
+            {{/if}}
+            {{#if tags}}
+                <section>
+                    <h2 id="tags">Tags</h2>
+                    {{#each tags}}
+                        <h3
+                            id="{{slug "tags" this.name}}"
+                        >{{this.name}}</h3>
+                        {{#if this.description}}
+                            {{{markdown this.description}}}
+                        {{/if}}
+                        {{#if this.externalDocs}}
+                            <a
+                                rel="external"
+                                href="${this.externalDocs.url}}"
+                            >External Documentation</a>
+                            {{#if this.externalDocs.description}}
+                                {{{markdown this.externalDocs.description}}}
+                            {{/if}}
+                        {{/if}}
+                    {{/each}}
+                </section>
+            {{/if}}
+            {{#if paths}}
+                <section>
+                    <h2 id="paths">Paths</h2>
+                    {{#each paths}}
+                        <h3 id="{{slug "paths" @key}}">{{@key}}</h3>
+                        {{#if this.summary}}
+                            <p>{{this.summary}}</p>
+                        {{/if}}
+                        {{#if this.description}}
+                            {{{markdown this.description}}}
+                        {{/if}}
+                        {{#if this.servers}}
+                            <h4>Servers</h4>
+                        {{/if}}
+                        {{#if this.parameters}}
+                            <h4>Parameters</h4>
+                        {{/if}}
+                        {{#if this.get}}
+                            <h4>GET</h4>
+                        {{/if}}
+                        {{#if this.put}}
+                            <h4>PUT</h4>
+                        {{/if}}
+                        {{#if this.post}}
+                            <h4>POST </h4>
+                        {{/if}}
+                        {{#if this.delete}}
+                            <h4>DELETE</h4>
+                        {{/if}}
+                        {{#if this.options}}
+                            <h4>OPTIONS</h4>
+                        {{/if}}
+                        {{#if this.head}}
+                            <h4>HEAD</h4>
+                        {{/if}}
+                        {{#if this.patch}}
+                            <h4>PATCH</h4>
+                        {{/if}}
+                        {{#if this.trace}}
+                            <h4>TRACE</h4>
+                        {{/if}}
+                    {{/each}}
+                </section>
+            {{/if}}
+            {{#if webhooks}}
+                <section>
+                    <h2 id="webhooks">Webhooks</h2>
+                    {{#each webhooks}}
+                        <h3 id="{{slug "webhooks" @key}}">{{@key}}</h3>
+                    {{/each}}
+                </section>
+            {{/if}}
+        </main>
+    </div>
+</body>
+</html>

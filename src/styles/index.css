@@ -1,0 +1,163 @@
+/*
+ * Copyright (C) 2021 Hunter Kohler <jhunterkohler@gmail.com>
+ */
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: black;
+}
+
+.root {
+    box-sizing: border-box;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    display: grid;
+    grid-template: "sidebar resizer main" / 25% min-content auto;
+}
+
+.sidebar {
+    --sidebar-bg-color: rgb(250, 250, 250);
+
+    box-sizing: border-box;
+    overflow-y: scroll;
+    height: 100%;
+    padding: 10%;
+    background: var(--sidebar-bg-color);
+}
+
+.toc__list {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+/*
+ * Has states: `open`, `empty`
+ */
+.toc__item {
+    --toc-open-duration: 0.1s;
+    --toc-open-function: ease-out;
+}
+
+.toc__label {
+    display: grid;
+    gap: 5px;
+    align-items: stretch;
+    grid-template-columns: repeat(2, min-content);
+}
+
+.toc__label::before {
+    content: url("/assets/right-arrow.svg");
+    transition: transform var(--toc-open-duration) var(--toc-open-function);
+    transform-origin: 45% 40%;
+}
+
+.toc__item--open .toc__label::before {
+    transform: rotate(90deg);
+}
+
+.toc__item--empty .toc__label::before {
+    content: url("/assets/dash.svg");
+    transform: none;
+}
+
+.toc__link {
+    text-decoration: none;
+}
+
+/*
+ * Works with `max-height` as `Element.prototype.scrollHeight` on open in JS.
+ */
+.toc__sublist {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height var(--toc-open-duration) var(--toc-open-function);
+}
+
+.main {
+    box-sizing: border-box;
+    height: 100%;
+    overflow-y: scroll;
+    padding: 25px 75px;
+}
+
+.title {
+    margin: 25px 0;
+}
+
+.title__text {
+    display: inline-block;
+    margin: 0;
+}
+
+.title__version {
+    display: inline-block;
+    margin: 0 0 0 5px;
+    font-size: 18px;
+}
+
+.info {
+
+}
+
+.info__label {
+    font-weight: 800;
+}
+
+.info__contact {
+    column-gap: 5px;
+    display: grid;
+    grid-template-columns: min-content auto;
+}
+
+.info__contact-description {
+    margin: 0;
+}
+
+.resizer {
+    width: 1px;
+    background-color: rgb(150, 150, 150);
+}
+
+.resizer__area {
+    height: 100%;
+    position: relative;
+    left: -8px;
+    width: 17px;
+    z-index: 2;
+}
+
+.resizer__area:hover {
+    cursor: ew-resize;
+}
+
+/*
+ * Removes sidebar under 1k pixels.
+ */
+@media screen and (max-width: 1000px) {
+    .root {
+        grid-template: "main";
+    }
+
+    .sidebar {
+        display: none;
+    }
+
+    .resizer {
+        display: none;
+    }
+}
+
+/*
+ * Reduce main's left/right padding under 800 pixels.
+ */
+@media screen and (max-width: 800px) {
+    .main {
+        padding: 25px 50px;
+    }
+}
