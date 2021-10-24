@@ -1,0 +1,12 @@
+{
+    "type": "module",
+    "devDependencies": {
+        "@types/node": "^16.11.1",
+        "express": "^4.17.1",
+        "prettier": "^2.4.1"
+    },
+    "dependencies": {
+        "handlebars": "^4.7.7",
+        "marked": "^3.0.7"
+    }
+}
