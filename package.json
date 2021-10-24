@@ -1,12 +1,21 @@
 {
     "type": "module",
-    "devDependencies": {
-        "@types/node": "^16.11.1",
-        "express": "^4.17.1",
-        "prettier": "^2.4.1"
+    "version": "0.0.1",
+    "author": {
+        "name": "John Hunter Kohler",
+        "email": "jhunterkohler@gmail.com",
+        "url": "https://github.com/HunterKohler"
+    },
+    "scripts": {
+        "dev": "node src/server.js"
     },
     "dependencies": {
         "handlebars": "^4.7.7",
         "marked": "^3.0.7"
+    },
+    "devDependencies": {
+        "@types/node": "^16.11.1",
+        "express": "^4.17.1",
+        "prettier": "^2.4.1"
     }
 }
