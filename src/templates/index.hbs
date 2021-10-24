@@ -157,20 +157,43 @@
                     {{#each components.securitySchemes}}
                         <h3 id="{{slug "security" @key}}">{{@key}}</h3>
                         {{{markdown this.description}}}
-                        <dl>
-                            <dt>Type</dt>
-                            <dd>{{this.type}}</dd>
+                        <dl class="security-definition">
+                            {{#if (eq this.type "mutualTLS")}}
+                                <dt>Type:</dt>
+                                <dd>Mutual TLS</dd>
+                            {{/if}}
                             {{#if (eq this.type "apiKey")}}
-                                <dt>Name</dt>
+                                <dt>Type:</dt>
+                                <dd>API Key</dd>
+                                <dt>Name:</dt>
                                 <dd>{{this.name}}</dd>
-                                <dt>In</dt>
+                                <dt>In:</dt>
                                 <dd>{{this.in}}</dd>
                             {{/if}}
                             {{#if (eq this.type "http")}}
-                                <dt>Scheme</dt>
+                                <dt>Type:</dt>
+                                <dd>HTTP</dd>
+                                <dt>Scheme:</dt>
                                 <dd>{{this.scheme}}</dd>
+                                {{#if (and (eq this.scheme "bearer") this.bearerFormat)}}
+                                    <dt>Bearer Format:</dt>
+                                    <dd>{{this.bearerFormat}}</dd>
+                                {{/if}}
                             {{/if}}
                             {{#if (eq this.type "oauth2")}}
+                                <dt>Type:</dt>
+                                <dd>OAuth 2.0</dd>
+                                <dt>Flows:</dt>
+                                <dd><!-- TODO --></dd>
+                            {{/if}}
+                            {{#if (eq this.type "openIdConnect")}}
+                                <dt>Type:</dt>
+                                <dd>OpenID Connect Discovery</dd>
+                                <dt>OpenID Connect URL:</dt>
+                                <dd>
+                                    <a href="{{this.openIdConnect}}"
+                                    >{{normalize this.openIdConnect}}</a>
+                                </dd>
                             {{/if}}
                         </dl>
                     {{/each}}

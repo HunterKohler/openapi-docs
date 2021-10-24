@@ -1,18 +1,9 @@
 /*
  * Copyright (C) 2021 Hunter Kohler <jhunterkohler@gmail.com>
  */
-html,
-body {
-    margin: 0;
-    padding: 0;
-}
-
-a {
-    color: black;
-}
+@use "globals";
 
 .root {
-    box-sizing: border-box;
     height: 100vh;
     width: 100vw;
     overflow: hidden;
@@ -21,13 +12,10 @@ a {
 }
 
 .sidebar {
-    --sidebar-bg-color: rgb(250, 250, 250);
-
-    box-sizing: border-box;
     overflow-y: scroll;
     height: 100%;
     padding: 10%;
-    background: var(--sidebar-bg-color);
+    background: rgb(250, 250, 250);
 }
 
 .toc__list {
@@ -80,7 +68,6 @@ a {
 }
 
 .main {
-    box-sizing: border-box;
     height: 100%;
     overflow-y: scroll;
     padding: 25px 75px;
@@ -102,7 +89,6 @@ a {
 }
 
 .info {
-
 }
 
 .info__label {
